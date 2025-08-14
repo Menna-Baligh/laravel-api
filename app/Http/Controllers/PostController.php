@@ -12,7 +12,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all() ;
+        return response()->json(Post::all()) ;
     }
 
     /**
@@ -20,7 +20,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return Post::create($request->all()) ;
+        // validation first
+        $request->validate([
+            'title' => 'required|min:3|max:255',
+            'slug' => 'required|unique:posts',
+        ]);
+
+        return response()->json(Post::create($request->all())) ;
     }
 
     /**
@@ -28,7 +34,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        return Post::find($id) ;
+        $post = Post::findOrFail($id) ;
+        return response()->json($post) ;
     }
 
     /**
@@ -36,9 +43,13 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $post = Post::find($id) ;
+        $post = Post::findOrFail($id) ;
+        $request->validate([
+            'title' => 'min:3|max:255',
+            'slug' => 'unique:posts,slug,'.$post->id,
+        ]);
         $post->update($request->all()) ;
-        return $post ;
+        return response()->json($post) ;
     }
 
     /**
@@ -46,6 +57,7 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        return Post::destroy($id) ;
+        Post::destroy($id) ;
+        return response()->json(['message' => 'Post Deleted Successfully deleted']) ;
     }
 }
