@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 
 Route::get('/user', function (Request $request) {
@@ -33,6 +34,29 @@ Route::get('/test', function (){
 // Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
 //* shorthand for the previous routes
-Route::apiResource('/posts', PostController::class);
+// Route::apiResource('/posts', PostController::class);
+
+
+//? public routes
+//* 1. Auth (register and get token)
+Route::post('/register',[AuthController::class, 'register']);
+//* 2. Auth(login and get token)
+Route::post('/login', [AuthController::class, 'login']);
+//* all
+Route::get('/posts',[PostController::class, 'index']);
+//* show
+Route::get('/posts/{id}', [PostController::class, 'show']);
 //* Add route for search
 Route::get('/posts/search/{title}', [PostController::class, 'search']);
+
+//? protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    //* store
+    Route::post('/posts', [PostController::class, 'store']);
+    //* update
+    Route::put('/posts/{id}', [PostController::class, 'update']);
+    //* delete
+    Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+    //* 3. Auth (logout and delete token)
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
