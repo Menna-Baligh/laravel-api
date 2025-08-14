@@ -34,3 +34,5 @@ Route::get('/test', function (){
 
 //* shorthand for the previous routes
 Route::apiResource('/posts', PostController::class);
+//* Add route for search
+Route::get('/posts/search/{title}', [PostController::class, 'search']);

@@ -60,4 +60,8 @@ class PostController extends Controller
         Post::destroy($id) ;
         return response()->json(['message' => 'Post Deleted Successfully deleted']) ;
     }
+    public function search($title){
+        $posts = Post::where('title','like','%'.$title.'%')->get() ;
+        return response()->json($posts) ;
+    }
 }
