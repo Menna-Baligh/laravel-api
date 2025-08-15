@@ -125,3 +125,33 @@ php artisan serve
 
 - You can use **Postman** to send requests to the API routes above.
 
+---
+## 📦 Laravel-postman Package
+To make testing easier, I installed the **yasin_tgh/laravel-postman** package.  
+This package generates a **Postman Collection file from your Laravel API routes** that you can directly import into Postman.
+
+### 🔗 Package Repository
+[Laravel-Postman](https://github.com/yasintqvi/laravel-postman)
+
+### 📥 Installation Steps
+1. **Install the package**:
+```bash
+composer require --dev yasin_tgh/laravel-postman
+```
+2. **Publish the configuration file**:
+```bash
+php artisan vendor:publish --provider="YasinTgh\LaravelPostman\PostmanServiceProvider" --tag="postman-config"
+```
+3. **Generate the Postman collection file**:
+```bash
+php artisan postman:generate
+```
+   This will create a file like:
+```
+storage/postman/api_collection
+```
+4. **Import into Postman**:
+   - Open **Postman**.
+   - Click **Import**.
+   - Select the generated file.
+   - Done 🎉 — Now you have all API routes ready to test.
