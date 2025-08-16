@@ -5,13 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
-Route::get('/test', function (){
-    return ['msg' => 'welcome menna'];
-});
+// Route::get('/test', function (){
+//     return ['msg' => 'welcome menna'];
+// });
 
 //* to create a resource (posts) in laravel
 //? 1. create the DB and migrations
@@ -39,9 +39,9 @@ Route::get('/test', function (){
 
 //? public routes
 //* 1. Auth (register and get token)
-Route::post('/register',[AuthController::class, 'register']);
+//Route::post('/register',[AuthController::class, 'register']);
 //* 2. Auth(login and get token)
-Route::post('/login', [AuthController::class, 'login']);
+//Route::post('/login', [AuthController::class, 'login']);
 //* all
 Route::get('/posts',[PostController::class, 'index']);
 //* show
@@ -58,5 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //* delete
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
     //* 3. Auth (logout and delete token)
-    Route::post('/logout', [AuthController::class, 'logout']);
+    //Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+require __DIR__.'/auth.php';
+require __DIR__.'/guest.php';

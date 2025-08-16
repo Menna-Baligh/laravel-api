@@ -34,7 +34,10 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::findOrFail($id) ;
+        $post = Post::find($id) ;
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
         return response()->json($post) ;
     }
 
@@ -43,22 +46,34 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $post = Post::findOrFail($id) ;
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+
         $request->validate([
-            'title' => 'min:3|max:255',
-            'slug' => 'unique:posts,slug,'.$post->id,
+            'title' => 'nullable|min:3|max:255',
+            'slug'  => 'nullable|unique:posts,slug,' . $post->id,
+            'likes' => 'nullable|integer',
         ]);
-        $post->update($request->all()) ;
-        return response()->json($post) ;
+
+
+        $post->update($request->all());
+
+        return response()->json($post);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        Post::destroy($id) ;
-        return response()->json(['message' => 'Post Deleted Successfully deleted']) ;
+        $post = Post::find($id) ;
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        $post->delete() ;
+        return response()->json(['message' => 'Post deleted successfully']) ;
     }
     public function search($title){
         $posts = Post::where('title','like','%'.$title.'%')->get() ;
