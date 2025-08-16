@@ -127,7 +127,7 @@ php artisan serve
 ---
 ## 🚨 CSRF Token Mismatch Issue & Fix in Laravel Breeze
 
-### **Problem**
+### Problem
 When using **Laravel Breeze** for authentication, it works by default with **web sessions**.
 - This means every POST, PUT, or DELETE request expects a **CSRF token** for security.
 - If you try to make API requests (e.g., via Postman, SPA, or mobile apps), Laravel cannot verify the CSRF token, resulting in:
@@ -140,7 +140,7 @@ This happens because API requests are usually **stateless**, and Laravel cannot 
 
 ---
 
-### **Solution**
+## 💡 Solution
 Follow these steps to fix the CSRF Token Mismatch when using API requests:
 
 #### **Step 1: Separate API Routes**
@@ -160,7 +160,7 @@ Follow these steps to fix the CSRF Token Mismatch when using API requests:
 
 ---
 
-✅ **Result:**
+## ✅ Result
 - API requests for login, register, and logout now work **without CSRF errors**.
 - Authentication becomes **stateless**, suitable for Postman, SPA, or mobile apps.
 - Backend remains secure while being easier to interact with via API.
