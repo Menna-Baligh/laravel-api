@@ -124,6 +124,47 @@ php artisan serve
 7. **Test the API**:
 
 - You can use **Postman** to send requests to the API routes above.
+---
+# 🚨 CSRF Token Mismatch Issue & Fix in Laravel Breeze
+
+## **Problem**
+When using **Laravel Breeze** for authentication, it works by default with **web sessions**.
+- This means every POST, PUT, or DELETE request expects a **CSRF token** for security.
+- If you try to make API requests (e.g., via Postman, SPA, or mobile apps), Laravel cannot verify the CSRF token, resulting in:
+
+```
+CSRF Token Mismatch
+```
+
+This happens because API requests are usually **stateless**, and Laravel cannot access the session data to validate the token.
+
+---
+
+## **Solution**
+Follow these steps to fix the CSRF Token Mismatch when using API requests:
+
+### **Step 1: Separate API Routes**
+- Create dedicated route files for API authentication (e.g., `guest.php` or `auth.php`).
+- Include routes for **register, login, and logout**.
+- Keeping API routes separate ensures they do not rely on web sessions.
+
+### **Step 2: Load Routes Under API Middleware**
+- In Laravel 12, all routes are loaded through **bootstrap/app.php**.
+- Make sure your API route files are loaded under the **API middleware group**.
+- This makes the routes **stateless**, so Laravel does **not expect a CSRF token**.
+
+### **Step 3: Use Token-Based Authentication**
+- For API requests, use **personal access tokens** (Laravel Sanctum) instead of session authentication.
+- Include the token in the request headers for authentication.
+- This eliminates the need for CSRF tokens entirely.
+
+---
+
+✅ **Result:**
+- API requests for login, register, and logout now work **without CSRF errors**.
+- Authentication becomes **stateless**, suitable for Postman, SPA, or mobile apps.
+- Backend remains secure while being easier to interact with via API.
+
 
 ---
 ## 📦 Laravel-postman Package
